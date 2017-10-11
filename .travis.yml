@@ -10,21 +10,18 @@ branches:
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
   - "echo `phantomjs -v`"
+services:
+  - postgresql
 addons:
-  mariadb: '10.2'
+  postgresql: "9.6"
 notifications:
   email:
-    on_success: change
-    on_failure: change
-  irc:
-    channels:
-      - "chat.freenode.net#osem"
     on_success: change
     on_failure: change
 before_script:
   - cp config/database.yml.example config/database.yml
   - cp config/secrets.yml.example config/secrets.yml
-  - mysql -u root -e 'create database osem_test;'
+  - psql -c 'create database osem_test;' -U postgres
   - RAILS_ENV=test bundle exec rake setup:bootstrap --trace
 script:
   - "./travis_script.sh $TEST_SUITE"

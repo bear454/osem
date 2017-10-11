@@ -27,9 +27,9 @@ gem 'responders', '~> 2.0'
 # as supported databases
 # WARNING: please refrain from using sqlite for anything serious as it is not
 #          performant enough
-gem 'mysql2'
+# gem 'mysql2'
 gem 'pg'
-gem 'sqlite3'
+#gem 'sqlite3'
 
 # for tracking data changes
 gem 'paper_trail'
