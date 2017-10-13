@@ -48,6 +48,8 @@
 //= require selectize
 //= require bootstrap-select
 //= require osem-survey
+//= require webfontloader
+//= require lfnw
 
 $(document).ready(function() {
     $('a[disabled=disabled]').click(function(event){

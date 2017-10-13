@@ -5,13 +5,6 @@
 - cache [conference, highlights, tracks, booths, '#splash#program'] do
   %section#program
     .container
-      .row
-        .col-md-12
-          %p.lead.text-center
-            %span.notranslate
-              = conference.title
-            has the most awesome program ever!
-
       - unless highlights.blank?
         = render 'highlights', conference_id: conference.short_title,
           highlights: highlights

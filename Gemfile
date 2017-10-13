@@ -121,6 +121,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-select'
   gem 'rails-assets-markdown'
   gem 'rails-assets-to-markdown'
+  # assistance with loading web fonts
+  gem 'rails-assets-webfontloader'
 end
 
 # as date picker

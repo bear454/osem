@@ -405,6 +405,7 @@ GEM
     rails-assets-to-markdown (3.0.0)
     rails-assets-trianglify (0.4.0)
     rails-assets-waypoints (4.0.0)
+    rails-assets-webfontloader (1.6.28)
     rails-controller-testing (1.0.2)
       actionpack (~> 5.x, >= 5.0.1)
       actionview (~> 5.x, >= 5.0.1)
@@ -671,6 +672,7 @@ DEPENDENCIES
   rails-assets-to-markdown!
   rails-assets-trianglify!
   rails-assets-waypoints!
+  rails-assets-webfontloader!
   rails-controller-testing
   rails-i18n (~> 5.0.0)
   rails_12factor

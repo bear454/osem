@@ -1,0 +1,330 @@
+@import "breakpoints.scss";
+
+/*
+ * Color variables - http://chir.ag/projects/name-that-color
+ */
+
+$web-orange: #fca300;
+$half-dutch-white: #fef7de;
+$hippie-blue: #6a9cb3;
+$elephant: #153a57;
+$tall-poppy: #be2626;
+$golden-sand: #f3d483;
+
+/*
+ * Font set variables
+ */
+
+$header-fonts: "Arvo","Cambria","American Typewriter","Courier","Courier New",serif;
+$text-fonts: "Open Sans","Tahoma",sans;
+
+/*
+ * Splash Page
+ */
+
+body {
+    background-color: $half-dutch-white;
+}
+
+#messages {
+    margin-top: -10px;
+    background-color: inherit;
+
+    .alert {
+        margin: 10px 0;
+    }
+}
+
+.navbar.navbar-default.navbar-fixed-top.nav-osem {
+    background-color: $web-orange !important;
+}
+
+#content {
+    padding-bottom: 40px !important;
+}
+
+#splash {
+
+    :not(.fa) {
+        font-family: $text-fonts;
+    }
+
+    .btn.btn-success {
+        border-color: $web-orange;
+        background-color: $web-orange;
+    }
+
+    .thumbnail {
+        border-radius: 8px;
+        border: none;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    #banner {
+        background-image: image-url("mountains.png");
+        background-position: bottom left;
+        background-repeat: repeat-x;
+        background-size: 100%;
+        background-color: $half-dutch-white;
+        padding-bottom: 40px !important;
+        @include breakpoint(xs) {
+            padding-top: 0px !important;
+        }
+        @include breakpoint(sm) {
+            padding-top: 0px !important;
+        }
+
+        h2, h3, h4, h5, h6 {
+            color: $elephant !important;
+            font-weight: bold;
+        }
+
+        #header {
+            background: none !important;
+
+            h1 {
+                font-family: $header-fonts;
+                font-weight: bold;
+                color: $web-orange;
+                text-shadow: 0 1px 1px #e04c10;
+                margin-top: 0 !important;
+                @include breakpoint(xs) {
+                    font-size: 2.6em;
+                }
+                @include breakpoint(sm) {
+                    font-size: 3em;
+                }
+                @include breakpoint(md) {
+                    font-size: 3.3em;
+                    white-space: nowrap;
+                }
+                @include breakpoint(lg) {
+                    font-size: 4em;
+                    white-space: nowrap;
+                }
+            }
+
+            h2 {
+                font-family: $text-fonts;
+                font-weight: bold;
+                margin-top: 0 !important;
+                @include breakpoint(xs) {
+                    font-size: 1.4em;
+                }
+                @include breakpoint(sm) {
+                    font-size: 1.55em;
+                }
+                @include breakpoint(md) {
+                    font-size: 1.7em;
+                    white-space: nowrap;
+                }
+                @include breakpoint(lg) {
+                    font-size: 2.1em;
+                    white-space: nowrap;
+                }
+
+                a {
+                    text-decoration: none;
+                    color: inherit !important;
+                }
+
+                span + span {
+                    &::before {
+                        content: '\2022'
+                    }
+                }
+            }
+        }
+
+    }
+
+    #about {
+        color: $half-dutch-white;
+        padding-top: 0;
+        font-size: 120%;
+        background-color: $hippie-blue;
+
+        a {
+            color: $web-orange;
+
+            &:hover {
+                color: $web-orange;
+            }
+        }
+    }
+
+    #about + section:not(#venue) {
+        background-image: image-url("trees_outline-hippie-blue.png");
+        background-position: top center;
+        background-repeat: repeat-x;
+        padding-top: 100px;
+    }
+
+    #call {
+        background-color: $elephant;
+        color: $hippie-blue;
+
+        h2 {
+            font-family: $header-fonts;
+            color: $half-dutch-white;
+        }
+    }
+
+    #call + section:not(#venue) {
+        background-image: image-url("trees_outline-elephant.png");
+        background-position: top center;
+        background-repeat: repeat-x;
+        padding-top: 100px;
+    }
+
+    #program {
+        background-color: $half-dutch-white;
+        color: $elephant;
+
+        h2 {
+            font-family: $header-fonts;
+        }
+
+        .highlights .thumbnail {
+            background-color: $half-dutch-white;
+            color: $elephant;
+            padding: 20px;
+
+            .caption {
+                color: $elephant;
+            }
+        }
+
+        .track .thumbnail, .booth .thumbnail {
+            background-color: $elephant;
+            color: $hippie-blue;
+            border: none;
+
+            .caption {
+                color: $hippie-blue
+            }
+        }
+    }
+
+    #program + section:not(#venue) {
+        background-image: image-url("trees_outline-half-dutch-white.png");
+        background-position: top center;
+        background-repeat: repeat-x;
+        padding-top: 100px;
+    }
+
+    #registration {
+        background-color: $elephant;
+        color: $hippie-blue;
+
+        h2 {
+            font-family: $header-fonts;
+            color: $half-dutch-white;
+        }
+    }
+
+    #tickets {
+        background-color: $elephant;
+        color: $hippie-blue;
+
+        h2 {
+            font-family: $header-fonts;
+            color: $half-dutch-white;
+        }
+
+        .thumbnail {
+            background-color: $half-dutch-white;
+            border-color: $half-dutch-white;
+            color: $elephant;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    #venue {
+
+    }
+
+    #lodging {
+        background-color: $hippie-blue !important;
+        color: $half-dutch-white !important;
+
+        h2 {
+            font-family: $header-fonts;
+            color: $half-dutch-white;
+        }
+
+        .thumbnail {
+            background-color: white;
+        }
+    }
+
+    #lodging + section:not(#venue) {
+        background-image: image-url("trees_outline-hippie-blue.png");
+        background-position: top center;
+        background-repeat: repeat-x;
+        padding-top: 100px;
+    }
+
+    #sponsors {
+        background-color: white;
+
+        h3 {
+            padding-bottom: 2px;
+            border-bottom: 1px solid #7b7b7b;
+        }
+
+        .img-sponsor {
+            margin: 10px auto 40px !important;
+        }
+    }
+
+    #sponsors + #social-media {
+        background-image: image-url("trees_outline-white.png");
+        background-position: top center;
+        background-repeat: repeat-x;
+
+        padding-top: 100px;
+    }
+
+    #social-media {
+        background-color: $elephant;
+        i {
+            color: $hippie-blue;
+            &:hover {
+                color: $web-orange;
+            }
+        }
+    }
+
+    .scroll-top-wrapper {
+        &:hover {
+            background-color: $web-orange;
+        }
+    }
+}
+
+#schedule {
+
+    .event {
+        background-image: linear-gradient($hippie-blue, white) !important;
+
+        a.unstyled-link {
+            color: black !important;
+        }
+    }
+}
+
+#footer {
+    background: $tall-poppy;
+    color: $half-dutch-white;
+
+    a {
+        color: $golden-sand;
+    }
+}
