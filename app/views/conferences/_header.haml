@@ -1,31 +1,36 @@
 - cache [conference, venue, '#splash#header'] do
   #banner
     .container
-      .row
-        .col-md-8.col-md-offset-2#header
-          .row
-            .col-md-4
-              - if conference.picture?
-                = image_tag(conference.picture_url,
-                  class: 'img-responsive img-center',
-                  id: 'splash-logo')
-            .col-md-8
-              %h1
-                = conference.title
-              %h3
-                - if conference.start_date && conference.end_date
-                  %span.date.text-nowrap
-                    = date_string(conference.start_date, conference.end_date)
-                - if conference.venue
-                  %span.venue.text-nowrap
-                    - if venue.website
-                      = sanitize link_to(venue.name, venue.website)
-                    - else
-                      = venue.city
-                      - if venue.country_name != 'US'
-                        &bull;
-                        = venue.country_name
-
+      .row#header
+        .col-md-2.hidden-xs.hidden-sm
+          - if conference.picture?
+            = image_tag(conference.picture_url,
+              class: 'img-responsive img-center',
+              id: 'splash-logo')
+        .col-sm-12.col-md-8.text-center
+          %h1
+            = conference.title
+          %h2
+            - if conference.start_date && conference.end_date
+              %span.date.text-nowrap
+                = date_string(conference.start_date, conference.end_date)
+            - if conference.venue
+              %span.venue.text-nowrap
+                - if venue.website
+                  = sanitize link_to(conference.venue.name,
+                    conference.venue.website)
+                - else
+                  = venue.city
+                  - if conference.venue.country_name != 'US'
+                    &bull;
+                    = conference.venue.country_name
+        - if @title_sponsor
+          .col-md-2.hidden-xs.hidden-sm.title-sponsor
+            = render 'sponsor', sponsor: @title_sponsor
+      - if @title_sponsor
+        .row.hidden-md.hidden-lg.title-sponsor
+          .col-xs-6.col-xs-offset-3
+            = render 'sponsor', sponsor: @title_sponsor
   - unless conference.description.blank?
     %section#about
       .container
