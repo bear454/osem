@@ -66,13 +66,14 @@ ActiveRecord::Schema.define(version: 20180316220446) do
   end
 
   create_table "cfps", force: :cascade do |t|
-    t.date     "start_date",  null: false
-    t.date     "end_date",    null: false
+    t.date     "start_date",         null: false
+    t.date     "end_date",           null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "program_id"
     t.string   "cfp_type"
     t.text     "description"
+    t.string   "document_file_name"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -465,6 +466,17 @@ ActiveRecord::Schema.define(version: 20180316220446) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "picture"
+    t.boolean  "paid",                 default: false
+    t.float    "amount"
+    t.boolean  "has_swag",             default: false
+    t.boolean  "swag_received"
+    t.string   "address"
+    t.string   "vat"
+    t.boolean  "has_banner",           default: false
+    t.text     "swag"
+    t.text     "swag_transportation"
+    t.string   "state"
+    t.text     "responsibe"
   end
 
   create_table "sponsorship_levels", force: :cascade do |t|

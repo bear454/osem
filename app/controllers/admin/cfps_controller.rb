@@ -57,7 +57,7 @@ module Admin
     private
 
     def cfp_params
-      params.require(:cfp).permit(:start_date, :end_date, :description, :cfp_type)
+      params.require(:cfp).permit(:start_date, :end_date, :description, :cfp_type, :prospectus, :prospectus_cache)
     end
   end
 end

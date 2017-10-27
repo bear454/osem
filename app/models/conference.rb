@@ -52,6 +52,7 @@ class Conference < ApplicationRecord
   has_one :call_for_events, -> { where(cfp_type: 'events') }, through: :program, source: :cfps
   has_one :call_for_booths, -> { where(cfp_type: 'booths') }, through: :program, source: :cfps
   has_one :call_for_tracks, -> { where(cfp_type: 'tracks') }, through: :program, source: :cfps
+  has_one :call_for_sponsors, -> { where(cfp_type: 'sponsors') }, through: :program, source: :cfps
   has_many :confirmed_tracks, -> { where(state: 'confirmed') }, through: :program, source: :tracks
   has_many :highlighted_events,
            -> { where(state: :confirmed, is_highlight: true) },

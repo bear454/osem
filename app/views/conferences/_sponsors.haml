@@ -24,12 +24,21 @@
                   - else
                     %h4.text-center= sponsor.name
 
-      .row
-        .col-md-12
-          %h3.text-center
-            Want to sponsor?
-            = link_to(sponsorship_mailto(conference)) do
-              Contact us!
+      - if conference.try(:call_for_sponsors)
+        - if conference.call_for_sponsors.open?
+          .row
+            .col-md-12
+              %h3.text-center
+                Want to sponsor?
+                - if conference.call_for_sponsors.prospectus?
+                  = link_to 'Sponsorship prospectus',
+                    conference.call_for_sponsors.prospectus.url,
+                    target: :_blank
+                - if conference.contact
+                  - if !conference.contact.sponsor_email.blank?
+                    &bull;
+                    = link_to 'Contact us',
+                      sponsorship_mailto(conference)
 
 - sponsors.each do |sponsor|
   - content_for :modals do

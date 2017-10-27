@@ -3,10 +3,11 @@
 # cannot delete program if there are events submitted
 
 class Cfp < ApplicationRecord
-  TYPES = %w(events booths tracks).freeze
+  TYPES = %w(events booths tracks sponsors).freeze
 
   has_paper_trail ignore: [:updated_at], meta: { conference_id: :conference_id }
   belongs_to :program
+  mount_uploader :prospectus, DocumentUploader, mount_on: :document_file_name
 
   validates :program_id, presence: true
   validates :start_date, :end_date, presence: true
