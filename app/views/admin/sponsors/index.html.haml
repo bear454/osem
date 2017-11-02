@@ -37,4 +37,11 @@
                   method: :delete, class: 'btn btn-danger', data: { confirm: "Do you really want to delete the sponsor #{sponsor.name}?" }
 .row
   .col-md-12
-    = link_to 'Add Sponsor', new_admin_conference_sponsor_path(@conference.short_title), class: 'btn btn-primary pull-right'
+    .btn-group.pull-right
+      = link_to 'Add Sponsor',
+        new_admin_conference_sponsor_path(@conference.short_title),
+        class: 'btn btn-primary'
+      = link_to 'Create Invoice in PayPal',
+        'https://www.paypal.com/invoice/create',
+        target: '_blank',
+        class: 'btn btn-info'
