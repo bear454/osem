@@ -154,8 +154,9 @@ gem 'rqrcode'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git'
 gem 'axlsx_rails'
 
-# as error catcher
-gem 'airbrake', '~> 7.1'
+# application monitoring
+gem 'rollbar'
+gem 'oj', '~> 2.16.1'
 
 # to make links faster
 gem 'turbolinks'
