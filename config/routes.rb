@@ -1,5 +1,10 @@
 Osem::Application.routes.draw do
 
+  # Problem children
+  get '/2017',
+    to: redirect('http://2017.linuxfestnorthwest.org/2017', status: 302)
+
+  # Root
   constraints DomainConstraint do
     get '/', to: 'conferences#show'
   end
