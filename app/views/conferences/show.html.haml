@@ -41,14 +41,14 @@
       = render 'registration', conference: @conference,
         registration_period: @conference.registration_period,
         tickets: @tickets, conference_id: @conference.short_title
-  - if @conference.splashpage.include_tickets && @conference.tickets.any?
+  - if @conference.splashpage.include_tickets && @tickets.any?
     = render 'tickets', conference: @conference, tickets: @tickets
 
   -# geo
   - if @conference.splashpage.include_venue && @conference.venue
     = render 'venue', conference: @conference, venue: @conference.venue,
       commercial: @conference.venue.commercial
-  - if @conference.splashpage.include_lodgings && @conference.lodgings.any?
+  - if @conference.splashpage.include_lodgings && @lodgings.any?
     = render 'lodging', venue: @conference.venue, lodgings: @lodgings
 
   -# sponsorship

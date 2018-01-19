@@ -52,16 +52,16 @@ class ConferencesController < ApplicationController
       end
     end
     if splashpage.include_registrations || splashpage.include_tickets
-      @tickets = @conference.tickets.order('price_cents')
+      @tickets = @conference.tickets.order('price_cents').load
     end
     if splashpage.include_lodgings
-      @lodgings = @conference.lodgings.order('name')
+      @lodgings = @conference.lodgings.order('name').load
     end
     if splashpage.include_sponsors
       @sponsorship_levels = @conference.sponsorship_levels.eager_load(
         :sponsors
       ).order('sponsorship_levels.position ASC', 'sponsors.name')
-      @sponsors = @conference.sponsors
+      @sponsors = @sponsorship_levels.collect(&:sponsors).flatten
     end
   end
 
