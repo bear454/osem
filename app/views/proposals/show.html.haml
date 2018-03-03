@@ -37,7 +37,7 @@
               %h4
                 = link_to speaker.name, user_path(speaker.id)
                 %br
-                - if speaker.email_public?
+                - if false # speaker.email_public?
                   = mail_to "#{ speaker.email }" do
                     %i.fa.fa-envelope-o.fa-2x
               - if speaker.affiliation?
