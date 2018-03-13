@@ -64,10 +64,13 @@ class Ticket < ApplicationRecord
   end
 
   def tickets_turnover_total(id)
-    ticket = Ticket.find(id)
-    return Money.new(0, 'USD') unless ticket
-    sum = ticket.ticket_purchases.paid.total
-    Money.new(sum, ticket.price_currency)
+    tickets = TicketPurchase.where(ticket_id: id).paid
+    if tickets.blank?
+      Money.new(0, Ticket.find(id).price_currency)
+    else
+      total = tickets.inject(0) { |sum, ticket| sum + (ticket.price_cents * ticket.quantity) }
+      Money.new(total, tickets.first.price_currency)
+    end
   end
 
   def tickets_sold
