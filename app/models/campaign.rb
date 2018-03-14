@@ -27,7 +27,7 @@ class Campaign < ApplicationRecord
   # ====Returns
   # * +Fixnum+ -> visits
   def visits_count
-    Visit.where(get_parameters).where('started_at > ?', created_at).count
+    0 #FIXME
   end
 
   ##
@@ -56,9 +56,7 @@ class Campaign < ApplicationRecord
   # ====Returns
   # * +Fixnum+ -> registrations / submissions
   def events_by_name(event_name)
-    parameters = get_parameters
-    parameters['ahoy_events.name'] = event_name
-    Visit.joins(:ahoy_events).where(parameters).where('started_at > ?', created_at).count
+    0 #FIXME
   end
 
   ##

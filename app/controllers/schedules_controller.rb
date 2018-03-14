@@ -55,7 +55,7 @@ class SchedulesController < ApplicationController
     )
     @events_schedules = [] unless @events_schedules
 
-    @unscheduled_events = @program.events.confirmed - @events_schedules.map(&:event)
+    @unscheduled_events = @program.events.confirmed.eager_load(:speakers).order('users.name ASC') - @events_schedules.map(&:event)
 
     day = @conference.current_conference_day
     @tag = day.strftime('%Y-%m-%d') if day

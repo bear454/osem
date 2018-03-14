@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'ahoy'
 
 describe Campaign do
   describe 'validations' do

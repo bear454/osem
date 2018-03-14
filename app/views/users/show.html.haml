@@ -3,7 +3,7 @@
     .col-md-12
       .page-header
         %h1
-          = image_tag(@user.gravatar_url(size: '48'), title: "Yo #{@user.name}!", alt: '')
+          = image_tag(@user.picture(48), width: 48)
           = @user.name
           %small
             = @user.nickname

@@ -22,8 +22,10 @@ class User < ApplicationRecord
   has_paper_trail on: [:create, :update], ignore: [:sign_in_count, :remember_created_at, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :unconfirmed_email,
                                                    :avatar_content_type, :avatar_file_size, :avatar_updated_at, :updated_at, :confirmation_sent_at, :confirmation_token, :reset_password_token]
 
+  # avatar
   include Gravtastic
   gravtastic size: 32
+  mount_uploader :avatar, PictureUploader
 
   before_create :setup_role
 
@@ -114,6 +116,14 @@ class User < ApplicationRecord
 
   def name
     self[:name].blank? ? username : self[:name]
+  end
+
+  def picture(size = 48)
+    if avatar?
+      avatar.thumb.url
+    else
+      gravatar_url(size: size)
+    end
   end
 
   ##

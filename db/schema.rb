@@ -12,18 +12,6 @@
 
 ActiveRecord::Schema.define(version: 20180316220446) do
 
-  create_table "ahoy_events", force: :cascade do |t|
-    t.integer  "visit_id"
-    t.integer  "user_id"
-    t.string   "name"
-    t.text     "properties"
-    t.datetime "time"
-    t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
-    t.index ["time"], name: "index_ahoy_events_on_time"
-    t.index ["user_id"], name: "index_ahoy_events_on_user_id"
-    t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
-  end
-
   create_table "answers", force: :cascade do |t|
     t.string   "title"
     t.datetime "created_at"
@@ -466,17 +454,6 @@ ActiveRecord::Schema.define(version: 20180316220446) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "picture"
-    t.boolean  "paid",                 default: false
-    t.float    "amount"
-    t.boolean  "has_swag",             default: false
-    t.boolean  "swag_received"
-    t.string   "address"
-    t.string   "vat"
-    t.boolean  "has_banner",           default: false
-    t.text     "swag"
-    t.text     "swag_transportation"
-    t.string   "state"
-    t.text     "responsibe"
   end
 
   create_table "sponsorship_levels", force: :cascade do |t|
@@ -627,6 +604,7 @@ ActiveRecord::Schema.define(version: 20180316220446) do
     t.boolean  "is_admin",               default: false
     t.string   "username"
     t.boolean  "is_disabled",            default: false
+    t.string   "avatar"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

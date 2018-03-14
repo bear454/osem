@@ -69,7 +69,7 @@ module Admin
 
     def user_params
       params.require(:user).permit(:email, :name, :email_public, :biography, :nickname, :affiliation, :is_admin,
-                                   :username, :login, :is_disabled, :tshirt, :mobile, :volunteer_experience,
+                                   :username, :login, :is_disabled, :tshirt, :mobile, :volunteer_experience, :avatar, :remove_avatar,
                                    :languages, :to_confirm, :password, role_ids: [])
     end
   end

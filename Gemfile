@@ -174,7 +174,6 @@ gem 'redcarpet'
 gem 'rdoc-generator-fivefish'
 
 # for visitor tracking
-gem 'ahoy_matey'
 gem 'piwik_analytics', '~> 1.0.1'
 
 # for recurring jobs
