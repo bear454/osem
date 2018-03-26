@@ -55,7 +55,9 @@ class User < ApplicationRecord
 
   has_many :event_users, dependent: :destroy
   has_many :events, -> { distinct }, through: :event_users
-  has_many :presented_events, -> { joins(:event_users).where(event_users: {event_role: 'speaker'}).distinct }, through: :event_users, source: :event
+  has_many :presented_events, -> {
+      confirmed.joins(:event_users).where(event_users: {event_role: 'speaker'}).distinct
+    }, through: :event_users, source: :event
   has_many :registrations, dependent: :destroy do
     def for_conference conference
       where(conference: conference).first
@@ -112,6 +114,27 @@ class User < ApplicationRecord
     registration = registrations.for_conference(conference)
     registration.attended = true
     registration.save
+  end
+
+  def physical_registration_ticket_for(conference)
+    ticket_purchases.eager_load(
+      :ticket,
+      :physical_tickets
+    ).where(
+      "tickets.conference_id"       => conference.id,
+      "tickets.registration_ticket" => true
+    ).collect(&:physical_tickets).flatten.first
+  end
+
+  def badge_ribbons_for(conference)
+    ribbons = tickets.where(conference: conference).pluck(:badge_ribbon)
+    if presented_events.count > 0
+      ribbons << 'Speaker'
+    end
+    roles.where(resource: conference).pluck(:name).each do |role|
+      ribbons << "Event #{role.titleize}"
+    end
+    ribbons.select{ |ribbon| !ribbon.blank? }.uniq.sort!
   end
 
   def name
@@ -244,6 +267,20 @@ class User < ApplicationRecord
 
   def proposal_count(conference)
     proposals(conference).count
+  end
+
+  def mecard
+    parts = [
+      "MECARD:N:#{name.gsub(';',' ')}"
+    ]
+    if email_public
+      parts << "EMAIL:#{email}"
+    end
+    unless affiliation.blank?
+      parts << "ORG:#{affiliation.gsub(';', ' ')}"
+    end
+    parts << ';'
+    parts.join(";")
   end
 
   private

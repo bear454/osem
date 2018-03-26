@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316220446) do
+ActiveRecord::Schema.define(version: 20180327183626) do
 
   create_table "answers", force: :cascade do |t|
     t.string   "title"
@@ -547,6 +547,7 @@ ActiveRecord::Schema.define(version: 20180316220446) do
     t.boolean  "registration_ticket", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "badge_ribbon"
   end
 
   create_table "tracks", force: :cascade do |t|

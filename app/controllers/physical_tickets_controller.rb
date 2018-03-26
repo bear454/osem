@@ -23,7 +23,7 @@ class PhysicalTicketsController < ApplicationController
         send_data pdf.render,
                   filename: @file_name,
                   type: 'application/pdf',
-                  disposition: 'attachment'
+                  disposition: 'inline'
       end
     end
   end

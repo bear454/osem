@@ -149,6 +149,7 @@ gem 'country_select'
 gem 'prawn-qrcode', '~> 0.2.2.1'
 gem 'prawn_rails'
 gem 'rqrcode'
+gem 'prawn-icon'
 
 # to render XLS spreadsheets
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git'

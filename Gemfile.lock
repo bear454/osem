@@ -343,6 +343,7 @@ GEM
     prawn (1.0.0)
       pdf-core (~> 0.2.2)
       ttfunk (~> 1.1.1)
+    prawn-icon (0.5.1)
     prawn-qrcode (0.2.2.1)
       prawn (>= 0.11.1)
       rqrcode (>= 0.4.1)
@@ -642,6 +643,7 @@ DEPENDENCIES
   phantomjs
   piwik_analytics (~> 1.0.1)
   poltergeist
+  prawn-icon
   prawn-qrcode (~> 0.2.2.1)
   prawn_rails
   puma (~> 3.0)

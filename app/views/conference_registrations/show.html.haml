@@ -5,6 +5,12 @@
         %h1
           Registration for
           = @conference.title
+          - if current_user.tickets.for_registration(@conference)
+            .btn-group.pull-right
+              = link_to(conference_physical_ticket_path(@conference.short_title,
+                current_user.physical_registration_ticket_for(@conference).token,
+                format: :pdf), class: 'btn btn-success pull-right btn-lg') do
+                = fa_icon 'id-badge fw', text: 'Print your badge!'
         %p.text-muted
           -if @conference.venue
             at
@@ -117,8 +123,13 @@
             %br
         - if @tickets.any?
           .btn-group
-            = link_to 'View all tickets', conference_physical_tickets_path(@conference.short_title), class: "btn btn-success"
+            = link_to 'View all tickets', conference_physical_tickets_path(@conference.short_title), class: "btn btn-default"
             = link_to 'Get more tickets', conference_tickets_path(@conference.short_title), class: "btn btn-default"
+            - if @current_user.tickets.for_registration(@conference)
+              = link_to(conference_physical_ticket_path(@conference.short_title,
+                @current_user.physical_registration_ticket_for(@conference).token,
+                format: :pdf), class: "btn btn-success") do
+                = fa_icon 'id-badge fw', text: 'Print your badge!'
         - else
           You haven't bought any tickets.
           = link_to 'Please get some tickets to support us!', conference_tickets_path(@conference.short_title)
