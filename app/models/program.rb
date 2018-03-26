@@ -78,7 +78,7 @@ class Program < ApplicationRecord
 
   # Returns all event_schedules for the selected schedule ordered by start_time
   def selected_event_schedules(includes: [:event])
-    event_schedules = []
+    event_schedules ||= []
     event_schedules = selected_schedule.event_schedules.includes(*includes).order(start_time: :asc) if selected_schedule
     tracks.self_organized.confirmed.includes(selected_schedule: { event_schedules: includes }).order(start_date: :asc).each do |track|
       next unless track.selected_schedule
