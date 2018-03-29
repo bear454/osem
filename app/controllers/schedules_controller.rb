@@ -9,22 +9,14 @@ class SchedulesController < ApplicationController
   before_action :load_withdrawn_event_schedules, only: [:show, :events]
 
   def show
-    event_schedules = @program.selected_event_schedules(
-      includes: [{ event: %i[event_type speakers submitter] }]
-    )
-
-    unless event_schedules
-      redirect_to events_conference_schedule_path(@conference.short_title)
-      return
-    end
-
     respond_to do |format|
-      format.xml do
-        @events_xml = event_schedules.map(&:event).group_by{ |event| event.time.to_date } if event_schedules
-      end
-
-      format.html do
+      format.html {
         @rooms = @conference.venue.rooms if @conference.venue
+        schedules = @program.selected_event_schedules
+        unless schedules
+          redirect_to events_conference_schedule_path(@conference.short_title)
+        end
+
         @dates = @conference.start_date..@conference.end_date
         @step_minutes = @program.schedule_interval.minutes
         @conf_start = @conference.start_hour
@@ -33,27 +25,27 @@ class SchedulesController < ApplicationController
         # the schedule takes you to today if it is a date of the schedule
         @current_day = @conference.current_conference_day
         @day = @current_day.present? ? @current_day : @dates.first
-        unless @current_day
+        if @current_day
           # the schedule takes you to the current time if it is beetween the start and the end time.
           @hour_column = @conference.hours_from_start_time(@conf_start, @conference.end_hour)
         end
-        # Ids of the @event_schedules of confrmed self_organized tracks along with the selected_schedule_id
+        # Ids of the schedules of confrmed self_organized tracks along with the selected_schedule_id
         @selected_schedules_ids = [@conference.program.selected_schedule_id]
         @conference.program.tracks.self_organized.confirmed.each do |track|
           @selected_schedules_ids << track.selected_schedule_id
         end
         @selected_schedules_ids.compact!
-        @event_schedules_by_room_id = event_schedules.select { |s| @selected_schedules_ids.include?(s.schedule_id) }.group_by(&:room_id)
-      end
+      }
+      format.xml {
+        @events_xml = Event.eager_load(:difficulty_level, :track, :event_type, event_schedules: :room, event_users: :user).where(event_schedules: {schedule: @program.selected_schedule}).group_by{|e| e.event_schedules.first.start_time.to_date}
+      }
     end
   end
 
   def events
     @dates = @conference.start_date..@conference.end_date
-    @events_schedules = @program.selected_event_schedules(
-      includes: [:room, { event: %i[track event_type speakers submitter] }]
-    )
-    @events_schedules = [] unless @events_schedules
+
+    @events_schedules = @program.selected_event_schedules
 
     @unscheduled_events = @program.events.confirmed.eager_load(:speakers).order('users.name ASC') - @events_schedules.map(&:event)
 

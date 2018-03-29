@@ -1,6 +1,7 @@
 .container
   = render partial: 'schedule_tabs',  locals: { active: 'schedule' }
 
+- cache([@conference, @conference.program.selected_schedule, :carousel], expires_in: 3.hours) do
   #schedule-content
     %h1.text-center
       Schedule for
