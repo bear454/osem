@@ -44,6 +44,9 @@
 # See TRANSLATION.md for details
 # OSEM_TRANSIFEX_APIKEY=1234
 
+# (Optional) Tracking ID for Google Analytics
+# OSEM_GA_TRACKING_ID=""
+
 # The errbit host to post exceptions to
 # OSEM_ERRBIT_HOST=errbit.example.com
 # The api key for the errbit host

@@ -1,0 +1,8 @@
+- if Rails.env.production? && ENV['OSEM_GA_TRACKING_ID']
+  / Global site tag (gtag.js) - Google Analytics
+  = javascript_include_tag "https://www.googletagmanager.com/gtag/js?id=#{ENV['OSEM_GA_TRACKING_ID']}"
+  :javascript
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '#{ENV['OSEM_GA_TRACKING_ID']}');
