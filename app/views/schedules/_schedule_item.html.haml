@@ -1,7 +1,5 @@
-- cache [@conference.program, event, event_schedule, :tablecell] do
-  %td.event{ width: "#{ width * span }%" , |
-             colspan: span, |
-             role: "button" }
+%td.event{ width: "#{ width * span }%" , colspan: span, role: "button" }
+  - cache [@conference, event, event_schedule, :tablecell] do
     %a.unstyled-link{href: url_for(conference_program_proposal_path(@conference.short_title, event.id))}
       %div{ class: "elipsis break-words event-title", |
             style: "-webkit-line-clamp: #{ event_lines(@rooms) }; height: #{ event_height(@rooms) }px;"} |
