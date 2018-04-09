@@ -75,8 +75,11 @@ class User < ApplicationRecord
   has_many :voted_events, through: :votes, source: :events
   has_many :subscriptions, dependent: :destroy
   has_many :tracks, foreign_key: 'submitter_id'
-  has_many :booth_requests
   has_many :booth_requests, dependent: :destroy
+  has_many :responsibility_booth_requests, -> { where(role: 'responsible') },
+    class_name: BoothRequest
+  has_many :responsible_for_booths, through: :responsibility_booth_requests,
+    source: :booth
   has_many :booths, through: :booth_requests
   has_many :survey_replies
   has_many :survey_submissions
@@ -133,6 +136,9 @@ class User < ApplicationRecord
     end
     roles.where(resource: conference).pluck(:name).each do |role|
       ribbons << "Event #{role.titleize}"
+    end
+    responsible_for_booths.where(conference: conference).pluck(:title).each do |booth|
+      ribbons << "#{booth} Booth"
     end
     ribbons.select{ |ribbon| !ribbon.blank? }.uniq.sort!
   end
