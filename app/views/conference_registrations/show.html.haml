@@ -123,7 +123,6 @@
             %br
         - if @tickets.any?
           .btn-group
-            = link_to 'View all tickets', conference_physical_tickets_path(@conference.short_title), class: "btn btn-default"
             = link_to 'Get more tickets', conference_tickets_path(@conference.short_title), class: "btn btn-default"
             - if @current_user.tickets.for_registration(@conference)
               = link_to(conference_physical_ticket_path(@conference.short_title,

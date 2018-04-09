@@ -125,7 +125,11 @@ Osem::Application.routes.draw do
       end
 
       resources :resources
-      resources :tickets
+      resources :tickets do
+        member do
+          post :give
+        end
+      end
       resources :sponsors, except: [:show]
       resources :lodgings, except: [:show]
       resources :targets, except: [:show]

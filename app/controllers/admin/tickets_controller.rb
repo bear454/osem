@@ -38,6 +38,17 @@ module Admin
       end
     end
 
+    def give
+      ticket_purchase = @ticket.ticket_purchases.new(gift_ticket_params)
+      recipient = ticket_purchase.user
+      if ticket_purchase.save
+        redirect_to admin_conference_ticket_path(@conference, @ticket),
+          notice: "#{view_context.link_to(recipient.name, admin_user_path(recipient))} was given a #{@ticket.title} ticket.".html_safe
+      else
+        redirect_back fallback_location: admin_conference_ticket_path(@ticket), error: "Unable to give #{view_context.link_to(recipient.name, admin_user_path(recipient))} a #{@ticket.title} ticket: #{ticket_purchase.errors.full_messages.to_sentence}".html_safe
+      end
+    end
+
     def destroy
       if @ticket.destroy
         redirect_to admin_conference_tickets_path(conference_id: @conference.short_title),
@@ -58,6 +69,13 @@ module Admin
         :price_cents, :price_currency, :price,
         :registration_ticket, :visible, :badge_ribbon
       )
+    end
+
+    def gift_ticket_params
+      response = params.require(:ticket_purchase).permit(
+        :user_id
+      )
+      response.merge( { paid: true, amount_paid: 0, conference: @conference } )
     end
   end
 end
