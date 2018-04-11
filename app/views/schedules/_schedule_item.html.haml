@@ -1,15 +1,25 @@
 %td.event{ width: "#{ width * span }%" , colspan: span, role: "button" }
   - cache [@conference, event, event_schedule, :tablecell] do
-    %a.unstyled-link{href: url_for(conference_program_proposal_path(@conference.short_title, event.id))}
-      %div{ class: "elipsis break-words event-title", |
-            style: "-webkit-line-clamp: #{ event_lines(@rooms) }; height: #{ event_height(@rooms) }px;"} |
-
+    = link_to conference_program_proposal_path(@conference.short_title, event.id),
+      class: 'unstyled-link' do
+      %div.elipsis.break-words.event-title{ style: "-webkit-line-clamp: #{event_lines(@rooms)}; height: #{event_height(@rooms)}px;" }
         = canceled_replacement_event_label(event, event_schedule, 'schedule-label')
-
-        = event.title
-
+        %b= event.title
+        = event.subtitle
+        %i.small
+          by
+          = event.speakers.collect(&:name).to_sentence
       - event.speakers_ordered.each do |speaker|
-        = image_tag speaker.picture, :class => "img-circle pull-right speaker-pic", |
-                                          :alt => speaker.name, |
-                                          :title => speaker.name, |
-                                          :style => "height: #{ speaker_height(@rooms) }px; width: #{ speaker_width(@rooms) }px;"
+        = image_tag speaker.picture,
+          class: "pull-right img-circle speaker-pic",
+          alt:   speaker.name,
+          title: speaker.name,
+          style: "height: #{ speaker_height(@rooms) }px; width: #{ speaker_width(@rooms) }px;"
+      - if event.track
+        .label.pull-left{ title: "Track: #{event.track.name}",
+          style: "background-color: #{event.track.color}; color: #{ contrast_color(event.track.color) }"}
+          = fa_icon('road', text: event.track.name)
+      - if event.difficulty_level
+        .label.pull-left{ title: "Difficulty: #{event.difficulty_level.title}",
+          style: "background-color: #{event.difficulty_level.color}; color: #{ contrast_color(event.difficulty_level.color) }"}
+          = fa_icon('level-up', text: event.difficulty_level.title)
