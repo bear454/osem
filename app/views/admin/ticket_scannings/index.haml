@@ -1,0 +1,14 @@
+.row
+  .col-md-12
+    .page-header
+      %h1 Registration/Ticket Scanning
+      %p.text-muted
+        Get attendees checked in, and give them their stuff!
+
+.row
+  .col-md-12
+    %h3 Scan old tickets
+    = form_tag("/admin/ticket_scannings/new", method: :get) do
+      = label_tag 'Token'
+      = text_field_tag :token
+      = submit_tag 'Scan', class: 'btn btn-primary'

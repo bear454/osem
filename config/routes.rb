@@ -41,7 +41,9 @@ Osem::Application.routes.draw do
         patch :toggle_confirmation
       end
     end
-    resource :ticket_scanning, only: [:create]
+    resources :ticket_scannings, only: [:index, :create, :new]
+    get '/scan_ticket/:token' => 'ticket_scannings#new', as: 'scan_ticket'
+
     resources :comments, only: [:index]
     resources :conferences do
       resources :surveys do

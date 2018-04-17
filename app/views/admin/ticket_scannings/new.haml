@@ -1,0 +1,51 @@
+.row
+  .col-md-12
+    .page-header
+      %h1 Registration Ticket Scanning
+      %p.text-muted
+        Ticket
+        = @physical_ticket.token
+- @attendee = @physical_ticket.user
+- @conference = @physical_ticket.conference
+- @registration = @attendee.registrations.for_conference(@conference)
+- @qanswers = @registration.qanswers.eager_load(:question, :answer)
+
+.row
+  .col-md-12
+    %h3 Identification
+    %dl{ id: "physical-ticket-#{@physical_ticket.id}" }
+      %dt Name
+      %dd= @attendee.name
+      %dt Email
+      %dd= @attendee.email
+      %dt affilation
+      %dd= @attendee.affiliation
+
+.row
+  .col-md-12
+    %h3 Registration Info
+    %dl
+      - @qanswers.order(:question_id).each do |qanswer|
+        %dt= qanswer.question.title
+        %dd= qanswer.answer.title
+      %dt Special Needs
+      %dd= @registration.other_special_needs
+
+.row
+  .col-md-12
+    %h3 Code of Conduct
+    %dt Accepted?
+    - if @registration.accepted_code_of_conduct
+      %dd.text-success
+        = fa_icon('check', title: 'accepted')
+    - else
+      %dd.text-warning
+      = fa_icon('exclamation-circle',
+        title: 'Has not accepted Code of Conduct')
+.row
+  .col-md-12
+    %h3 Check In
+    = semantic_form_for [:admin, @ticket_scanning] do |form|
+      = form.input :physical_ticket_id, as: :hidden, value: @physical_ticket.id
+      = form.action :submit, as: :button, label: "Check In",
+        button_html: { class: 'btn btn-lg btn-primary' }

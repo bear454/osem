@@ -3,16 +3,26 @@
 module Admin
   class TicketScanningsController < Admin::BaseController
     before_action :authenticate_user!
-    load_resource :physical_ticket, find_by: :token
-    # We authorize manually in these actions
-    skip_authorize_resource only: [:create]
+    authorize_resource
+
+    def index; end
 
     def create
-      @ticket_scanning = TicketScanning.new(physical_ticket: @physical_ticket)
-      authorize! :create, @ticket_scanning
+      @ticket_scanning = TicketScanning.new(ticket_scanning_params)
       @ticket_scanning.save
-      redirect_to conferences_path,
-                  notice: "Ticket with token #{@physical_ticket.token} successfully scanned."
+      redirect_to admin_ticket_scannings_path,
+        notice: "Ticket with token #{@ticket_scanning.physical_ticket.token} successfully scanned."
+    end
+
+    def new
+      @physical_ticket = PhysicalTicket.find_by_token(params['token'])
+      @ticket_scanning = TicketScanning.new(physical_ticket: @physical_ticket)
+    end
+
+    private
+
+    def ticket_scanning_params
+      params.require(:ticket_scanning).permit(:physical_ticket_id)
     end
   end
 end
