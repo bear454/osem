@@ -28,6 +28,9 @@ Osem::Application.routes.draw do
     resources :openids, only: :destroy
   end
 
+  get '/checkin',
+    to: redirect('/admin/ticket_scannings', status: 302)
+
   namespace :admin do
     resources :organizations do
       member do
@@ -43,6 +46,7 @@ Osem::Application.routes.draw do
     end
     resources :ticket_scannings, only: [:index, :create, :new]
     get '/scan_ticket/:token' => 'ticket_scannings#new', as: 'scan_ticket'
+
 
     resources :comments, only: [:index]
     resources :conferences do

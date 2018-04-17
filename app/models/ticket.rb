@@ -20,6 +20,8 @@ class Ticket < ApplicationRecord
 
   scope :visible, -> { where(visible: true) }
 
+  serialize :materials
+
   def bought?(user)
     buyers.include?(user)
   end

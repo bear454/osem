@@ -320,6 +320,19 @@ body {
     }
 }
 
+/*** custom checkboxes ***/
+.fa-input-checkbox {
+    input[type=checkbox] { display:none; } /* to hide the checkbox itself */
+    input[type=checkbox] + label:before {
+      font-family: FontAwesome;
+      display: inline-block;
+      width: 1em;
+    }
+    input[type=checkbox] + label:before { content: "\f096"; } /* unchecked icon */
+    input[type=checkbox]:checked + label:before { content: "\f14a"; } /* checked icon */
+
+}
+
 #footer {
     background: $tall-poppy;
     color: $half-dutch-white;

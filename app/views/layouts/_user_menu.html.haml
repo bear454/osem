@@ -64,6 +64,10 @@
           Manage
           %span.notranslate
             = @conference.short_title
+- if can? :manage, TicketScanning
+  %li
+    = link_to(admin_ticket_scannings_path) do
+      = fa_icon('sign-in', text: 'Check-in')
 - if can? :manage, User.new
   %li
     = link_to(admin_users_path) do

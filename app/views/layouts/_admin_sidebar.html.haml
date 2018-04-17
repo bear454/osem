@@ -100,6 +100,10 @@
         - if can? :update, Question.new(conference_id: @conference.id)
           %li{class: active_nav_li(admin_conference_questions_path(@conference.short_title))}
             = link_to 'Questions', admin_conference_questions_path(@conference.short_title)
+        - if can? :manage, TicketScanning
+          %li
+            = link_to(admin_ticket_scannings_path) do
+              = fa_icon('sign-in', text: 'Check-in')
 
   - if (can? :manage, @conference.sponsorship_levels.build) || (can? :manage, @conference.sponsors.build) || (can? :manage, @conference.tickets.build)
     %li

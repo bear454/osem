@@ -227,10 +227,10 @@ class AdminAbility
     can :manage, Question do |question|
       !(question.conferences.pluck(:id) & conf_ids_for_info_desk).empty?
     end
-    can :create, TicketScanning do |ticket_scanning|
-      conf_id = ticket_scanning.physical_ticket.ticket_purchase.conference_id
-      conf_ids_for_info_desk.include? conf_id
-    end
+    can :manage, TicketScanning # do |ticket_scanning|
+    #   conf_id = ticket_scanning.physical_ticket.ticket_purchase.conference_id
+    #   conf_ids_for_info_desk.include? conf_id
+    # end
 
     # Abilities for Role (Conference resource)
     can [:index, :show], Role do |role|

@@ -1,51 +1,69 @@
-.row
-  .col-md-12
-    .page-header
-      %h1 Registration Ticket Scanning
-      %p.text-muted
-        Ticket
-        = @physical_ticket.token
-- @attendee = @physical_ticket.user
-- @conference = @physical_ticket.conference
-- @registration = @attendee.registrations.for_conference(@conference)
-- @qanswers = @registration.qanswers.eager_load(:question, :answer)
+= semantic_form_for [:admin, @ticket_scanning] do |form|
+  = form.input :physical_ticket_id, as: :hidden, value: @physical_ticket.id
 
-.row
-  .col-md-12
-    %h3 Identification
-    %dl{ id: "physical-ticket-#{@physical_ticket.id}" }
-      %dt Name
-      %dd= @attendee.name
-      %dt Email
-      %dd= @attendee.email
-      %dt affilation
-      %dd= @attendee.affiliation
+  .row
+    .col-md-12
+      .page-header
+        %h1 Ticket Scanning
+        %p.text-muted
+          Ticket
+          = @physical_ticket.token
 
-.row
-  .col-md-12
-    %h3 Registration Info
-    %dl
-      - @qanswers.order(:question_id).each do |qanswer|
-        %dt= qanswer.question.title
-        %dd= qanswer.answer.title
-      %dt Special Needs
-      %dd= @registration.other_special_needs
+  .row
+    .col-md-6
+      %h3 Identification
+      %dl.dl-horizontal
+        %dt Name
+        %dd= @attendee.name
+        %dt Email
+        %dd= @attendee.email
+        %dt affilation
+        %dd= @attendee.affiliation
 
-.row
-  .col-md-12
-    %h3 Code of Conduct
-    %dt Accepted?
-    - if @registration.accepted_code_of_conduct
-      %dd.text-success
-        = fa_icon('check', title: 'accepted')
-    - else
-      %dd.text-warning
-      = fa_icon('exclamation-circle',
-        title: 'Has not accepted Code of Conduct')
-.row
-  .col-md-12
-    %h3 Check In
-    = semantic_form_for [:admin, @ticket_scanning] do |form|
-      = form.input :physical_ticket_id, as: :hidden, value: @physical_ticket.id
+    .col-md-6
+      %h3 Code of Conduct
+      %dt Accepted?
+      - if @registration.accepted_code_of_conduct
+        %dd.text-success
+          = fa_icon('check', title: 'accepted')
+      - else
+        %dd.text-warning
+        = fa_icon('exclamation-circle',
+          title: 'Has not accepted Code of Conduct')
+
+  .row
+    .col-md-6
+      %h3 Registration Info
+      %dl
+        - @qanswers.order(:question_id).each do |qanswer|
+          %dt= qanswer.question.title
+          %dd= qanswer.answer.title
+        - if @registration.other_special_needs.present?
+          %dt Special Needs
+          %dd= @registration.other_special_needs
+
+    .col-md-6
+      %h3 Ticket Purchases
+      - @purchases.each do |purchase|
+        %p
+          = "Purchase ##{purchase.id}:"
+          = purchase.ticket.title
+          - if purchase.quantity > 1
+            %span.label.label-info
+              %b= fa_icon('times', text: purchase.quantity)
+      %h3 Materials to Deliver
+      - @materials.each_with_index do |material, index|
+        %p.form-check.fa-input-checkbox.lead
+          %input.form-check-input{ type: 'checkbox',
+            name: 'ticket_scanning[materials][]',
+            value: material, id: "ticket_scanning_materials_#{index}" }
+          %label.form-check-label{for:  "ticket_scanning_materials_#{index}"}
+            = material
+      - if @delivered.present?
+        %p.small
+          Already delivered:
+          %br
+          = @delivered.to_sentence
+      %hr
       = form.action :submit, as: :button, label: "Check In",
-        button_html: { class: 'btn btn-lg btn-primary' }
+        button_html: { class: 'btn btn-lg btn-primary btn-block' }

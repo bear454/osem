@@ -67,7 +67,8 @@ module Admin
         :conference, :conference_id,
         :title, :url, :description,
         :price_cents, :price_currency, :price,
-        :registration_ticket, :visible, :badge_ribbon
+        :registration_ticket, :visible, :badge_ribbon,
+        materials: []
       )
     end
 
