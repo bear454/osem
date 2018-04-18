@@ -130,7 +130,7 @@ class TicketPdf < Prawn::Document
           bounding_box([(bounds.width - bounds.height- 36) / 2, (bounds.height - 36) / 2 + 36], width: 36, height: 36) do
             icon 'fa-sign-in', size: 36
           end
-          print_qr_code("https://#{ENV['OSEM_HOSTNAME']}/admin/scan_ticket/#{@registration_ticket}",
+          print_qr_code("https://#{ENV['OSEM_HOSTNAME']}/admin/scan_ticket/#{@registration_ticket.token}",
             pos: [bounds.right - bounds.height + 9, bounds.top - 9],
             extent: bounds.height - 18,
             stroke: false,
