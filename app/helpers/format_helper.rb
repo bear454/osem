@@ -126,6 +126,10 @@ module FormatHelper
     (yiq >= 128) ? 'black' : 'white'
   end
 
+  def colorize_css(color)
+    "background-color: #{color}; color: #{contrast_color(color)}"
+  end
+
   def td_height(rooms)
     td_height = 500 / rooms.length
     # we want all least 3 lines in events and td padding = 3px, speaker picture height >= 25px

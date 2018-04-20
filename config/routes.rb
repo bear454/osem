@@ -216,6 +216,7 @@ Osem::Application.routes.draw do
     resource :schedule, only: [:show] do
       member do
         get :events
+        get :kiosk
       end
     end
   end

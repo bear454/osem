@@ -53,6 +53,25 @@ class SchedulesController < ApplicationController
     @tag = day.strftime('%Y-%m-%d') if day
   end
 
+  def kiosk
+    if Rails.env.development?
+      current_datetime = DateTime.parse("2018-04-28 10:00 PDST")
+    else
+      current_datetime = DateTime.now
+    end
+    event_schedules = @program.selected_event_schedules.sort_by! do |event_schedule|
+      [ event_schedule.start_time, event_schedule.room.name ]
+    end
+    @now_event_schedules = event_schedules.select do |event_schedule|
+      event_schedule.start_time <= current_datetime &&
+      event_schedule.end_time >= current_datetime
+    end
+    @next_event_schedules = event_schedules.select do |event_schedule|
+      event_schedule.start_time > current_datetime
+    end[0..19]
+    render layout: 'kiosk'
+  end
+
   private
 
   def respond_to_options

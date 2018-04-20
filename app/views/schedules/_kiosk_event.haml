@@ -1,0 +1,35 @@
+- cache [@conference, :schedule, :kiosk, event_schedule] do
+  - condensed ||= false
+  - event = event_schedule.event
+  - start_time = event_schedule.start_time.strftime('%l:%M')
+  - end_time = event_schedule.end_time.strftime('%l:%M')
+  - speaker_names = event.speakers.collect(&:name)
+  - room = event_schedule.room
+  - track = event.track
+  - difficulty = event.difficulty_level
+  %tr
+    %td{ colspan: (condensed ? 4 : 5) }
+      %b
+        - if event.is_highlight
+          = fa_icon 'star'
+        = event.title
+      - unless condensed
+        = event.subtitle
+  %tr.text-nowrap
+    %td.speaker
+      %i= speaker_names.to_sentence
+    - unless condensed
+      %td.time
+        = fa_icon('clock-o fw', text: "#{start_time} - #{end_time}")
+    %td.room
+      = fa_icon('map-marker fw', text: (condensed ? room.name.split(' ').first : room.name))
+    - if track
+      %td.track{ style: colorize_css(track.color) }
+        = fa_icon('road fw', text: track.name)
+    - else
+      %td &nbsp;
+    - if difficulty
+      %td.difficulty{ style: colorize_css(difficulty.color) }
+        = fa_icon('level-up fw', text: difficulty.title)
+    - else
+      %td &nbsp;

@@ -1,0 +1,23 @@
+- content_for :head do
+  %meta{ 'http-equiv' => 'refresh', content: 300 }
+
+- content_for :nav do
+  %ul.nav.navbar-nav.navbar-right
+    %li.navbar-text
+      Refreshed at
+      = Time.now.strftime('%l:%M %P')
+.container-fluid
+  .row
+    .col.col-xs-4
+      %h3 Now!
+      %table.table.table-condensed.small
+        - @now_event_schedules.each do |event_schedule|
+          = render 'kiosk_event',
+            event_schedule: event_schedule,
+            condensed: true
+    .col.col-xs-8
+      %h3 Next...
+      %table.table.table-condensed
+        - @next_event_schedules.each do |event_schedule|
+          = render 'kiosk_event',
+            event_schedule: event_schedule
