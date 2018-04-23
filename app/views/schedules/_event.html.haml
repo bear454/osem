@@ -35,5 +35,5 @@
       - if event.track
         %span.track
           %span.fa.fa-road
-          %span.label{ style: colorize_css(track.color) }
+          %span.label{ style: colorize_css(event.track.color) }
             = event.track.name
