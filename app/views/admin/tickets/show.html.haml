@@ -20,23 +20,25 @@
   .col-md-12
     %table.datatable
       %thead
-        %th #
+        %th
+          %abbr{ title: 'TicketPurchase ID(s)' } #
         %th Name
         %th Quantity
         %th E-Mail
         %th Affiliation
         %th Paid
       %tbody
-        - @ticket.buyers.each_with_index do |buyer, index|
+        - @ticket.buyers.each do |buyer|
+          - purchases = buyer.ticket_purchases.where(ticket_id: @ticket.id)
           %tr
             %td
-              = index + 1
+              = purchases.collect(&:id).join(' ')
             %td
-              = buyer.name
+              = link_to buyer.name, admin_user_path(buyer)
             %td
-              = buyer.ticket_purchases.where(ticket_id: @ticket.id).sum('quantity')
+              = purchases.sum('quantity')
             %td
-              = buyer.email
+              = mail_to buyer.email
             %td
               = buyer.affiliation
             %td
