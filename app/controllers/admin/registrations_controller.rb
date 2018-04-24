@@ -13,6 +13,7 @@ module Admin
       ).order('registrations.created_at ASC').to_a
       @attended = @registrations.count(&:attended)
       @questions = @conference.questions.to_a
+      @ticket = @conference.tickets.where(registration_ticket: true).first
 
       @registration_distribution = @conference.registration_distribution
       @affiliation_distribution = @conference.affiliation_distribution
@@ -50,6 +51,15 @@ module Admin
 
     def toggle_attendance
       @registration.attended = !@registration.attended
+      if @registration.save
+        head :ok
+      else
+        head :unprocessable_entity
+      end
+    end
+
+    def toggle_code_of_conduct
+      @registration.accepted_code_of_conduct = !@registration.accepted_code_of_conduct
       if @registration.save
         head :ok
       else

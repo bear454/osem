@@ -42,7 +42,8 @@ module Admin
       ticket_purchase = @ticket.ticket_purchases.new(gift_ticket_params)
       recipient = ticket_purchase.user
       if ticket_purchase.save
-        redirect_to admin_conference_ticket_path(@conference, @ticket),
+        ticket_purchase.pay(nil)
+        redirect_back fallback_location: admin_conference_ticket_path(@conference, @ticket),
           notice: "#{view_context.link_to(recipient.name, admin_user_path(recipient))} was given a #{@ticket.title} ticket.".html_safe
       else
         redirect_back fallback_location: admin_conference_ticket_path(@ticket), error: "Unable to give #{view_context.link_to(recipient.name, admin_user_path(recipient))} a #{@ticket.title} ticket: #{ticket_purchase.errors.full_messages.to_sentence}".html_safe

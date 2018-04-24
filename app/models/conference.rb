@@ -453,7 +453,7 @@ class Conference < ApplicationRecord
     others = 0
     none = 0
     counted_affiliations.each do |key, value|
-      if value < 0.02 * registrations.length
+      if value == 1
         others += value
       elsif key.blank?
         none += value
@@ -463,7 +463,7 @@ class Conference < ApplicationRecord
       end
     end
     if others > 0
-      result['Others'] = { 'value' => others, 'color' => next_color(i) }
+      result['Individual'] = { 'value' => others, 'color' => next_color(i) }
       i += 1
     end
     result['None'] = { 'value' => none, 'color' => next_color(i) } if none > 0

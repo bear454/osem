@@ -13,11 +13,6 @@
             = link_to 'Export XLS', {format: :xlsx}, class: 'btn btn-success'
       %p.text-muted
         All the people who registered to your event
-  .col-md-4
-    = render partial: 'admin/conferences/doughnut_chart', locals: {title: 'Affiliation', data: @affiliation_distribution}
-  - unless @conference.pending?
-    .col-md-4
-      = render partial: 'admin/conferences/doughnut_chart', locals: {title: 'Attended registrations', data: @registration_distribution}
 .row
   .col-md-12
     %div.margin-event-table
@@ -26,18 +21,21 @@
           %tr
             %th ID#
             %th Name
-            %th E-Mail
+            %th Email
             - if @code_of_conduct
               %th
                 %abbr{ title: 'Code of Conduct' } CoC
-            %th Arrival
-            %th Departure
-            - if @questions.any?
-              %th Questions
-            %th Actions
+            - Feature.with(:travel_dates) do
+              %th Arrival
+              %th Departure
+            %th Attendance
+            %th
+            %th
         %tbody
           - @registrations.each_with_index do |registration, index|
             - cache [:admin, registration, registration.user] do
+              - user = registration.user
+              - token = user.ticket_purchases.select{|p| p.ticket_id == @ticket.id }&.first&.physical_tickets&.first&.token
               %tr
                 %td
                   = registration.id
@@ -56,41 +54,46 @@
                     %td.text-center.text-warning
                       = fa_icon('exclamation-circle',
                         title: 'Has not accepted Code of Conduct')
-                %td
-                  - if registration.arrival
-                    = registration.arrival.strftime('%d %b %H:%M')
-                  - else
-                    n/a
-                %td
-                  - if registration.departure
-                    = registration.departure.strftime('%d %b %H:%M')
-                  - else
-                    n/a
-                -if @questions.any?
+                - Feature.with(:travel_dates) do
                   %td
-                    = link_to 'Questions','#', class: 'btn btn-success question-btn', 'data-id' => index, 'data-name' => registration.name
-                %td{ 'data-order' => registration.attended.to_s }
-                  = check_box_tag "#{@conference.short_title}_#{registration.id}", registration.id, registration.attended,
-                    class: 'switch-checkbox', method: :patch,
-                    url: toggle_attendance_admin_conference_registration_path(@conference.short_title, id: registration.id)+"?attended=",
-                    data: { size: 'small',
-                            on_color: 'success',
-                            off_color: 'warning',
-                            on_text: 'Present',
-                            off_text: 'Absent' }
-                  .btn-group
-                    = link_to 'Edit', edit_admin_conference_registration_path(@conference.short_title, id: registration),
-                    method: :get, class: 'btn btn-primary'
-                    = link_to 'Delete', admin_conference_registration_path(@conference.short_title, registration),
-                    method: :delete, class: 'btn btn-danger', data: { confirm: "Do you really want to delete the Registration for #{registration.name}?" }
-    - @registrations.each_with_index do |registration, index|
-      .questions{class: "question#{index}", style: 'display:none;'}
-        = render partial: 'questions', locals: { registration: registration }
+                    - if registration.arrival
+                      = registration.arrival.strftime('%d %b %H:%M')
+                    - else
+                      n/a
+                  %td
+                    - if registration.departure
+                      = registration.departure.strftime('%d %b %H:%M')
+                    - else
+                      n/a
+                - if registration.attended
+                  %td.text-success.text-center= fa_icon('check-square-o', title: 'attended')
+                - else
+                  %td.text-muted.text-center
+                    = fa_icon('square-o', title: 'never checked in')
 
-.modal.fade{ id: 'questions', 'role' => 'dialog', 'aria-hidden' => 'true' }
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %h3{id: 'question-modal-header'}
-          Questions for Foobar
-      .modal-body#question-modal-body
+                - if token
+                  %td
+                    .btn-group
+                      = link_to(conference_physical_ticket_path(@conference.short_title,
+                        token, format: :pdf),
+                        class: 'btn btn-success', target: '_blank') do
+                        = fa_icon 'print', text: 'Badge'
+                      = link_to(admin_scan_ticket_path(token: token),
+                        class: 'btn btn-primary') do
+                        = fa_icon('sign-in', text: 'Check-in')
+                - else
+                  - ticket_purchase = TicketPurchase.new(user: user, ticket: @ticket, conference: @conference)
+                  = form_for(ticket_purchase, url: give_admin_conference_ticket_path(@conference, @ticket)) do |f|
+                    %td
+                      = f.hidden_field :user_id
+                      = f.button fa_icon('ticket', text: 'Give Ticket'),
+                        type: :submit, class: 'btn btn-warning'
+                %td
+                  .btn-group
+                    = link_to edit_admin_conference_registration_path(@conference.short_title, id: registration),
+                      class: 'btn btn-primary' do
+                      = fa_icon 'pencil', text: 'Edit'
+                    = link_to admin_conference_registration_path(@conference.short_title, registration),
+                      method: :delete, class: 'btn btn-danger',
+                      data: { confirm: "Do you really want to delete the Registration for #{registration.name}?" } do
+                      = fa_icon 'trash-o', text: 'Delete'
