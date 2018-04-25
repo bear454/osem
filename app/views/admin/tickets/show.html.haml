@@ -28,21 +28,21 @@
         %th Affiliation
         %th Paid
       %tbody
-        - @ticket.buyers.each do |buyer|
-          - purchases = buyer.ticket_purchases.where(ticket_id: @ticket.id)
+        - @buyers.each do |buyer|
+          - purchases = buyer.ticket_purchases.select{|p| p.ticket_id == @ticket.id}
           %tr
             %td
               = purchases.collect(&:id).join(' ')
             %td
               = link_to buyer.name, admin_user_path(buyer)
             %td
-              = purchases.sum('quantity')
+              = purchases.sum(&:quantity)
             %td
               = mail_to buyer.email
             %td
               = buyer.affiliation
             %td
-              = @ticket.tickets_paid(buyer)
+              = "#{purchases.sum{|p| p.paid ? p.quantity : 0 }}/#{purchases.sum(&:quantity)}"
 
 - content_for :modals do
   .modal.fade{ id: "modal-give-ticket-#{@ticket.id}" }

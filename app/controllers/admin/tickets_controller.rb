@@ -11,6 +11,10 @@ module Admin
       @tickets_turnover_distribution = @conference.tickets_turnover_distribution
     end
 
+    def show
+      @buyers = @ticket.buyers.eager_load(:ticket_purchases)
+    end
+
     def new
       @ticket = @conference.tickets.new
     end
