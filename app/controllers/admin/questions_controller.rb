@@ -13,7 +13,19 @@ module Admin
     end
 
     def show
-      @registrations = @conference.registrations.joins(:qanswers).uniq
+      @registrations = @conference.registrations.eager_load(
+        :user,
+        qanswers: [:question, :answer]
+      ).where('questions.id = ?', @question.id)
+      if params['answer_id']
+        @answer = @question.answers.find(params['answer_id'])
+        @registrations = @registrations.where('answers.id = ?', @answer.id)
+      else
+        @answers = @question.answers.order('answers.title')
+      end
+      @registrations = @registrations.order('answers.title, users.name, users.username')
+      @summary = @conference.qanswers.includes(:registrations).group(:answer).
+        where('questions.id = ?', @question.id).count(:registrations)
     end
 
     def new

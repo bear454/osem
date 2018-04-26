@@ -18,6 +18,7 @@ class Conference < ApplicationRecord
   has_paper_trail ignore: %i(updated_at guid revision events_per_week), meta: { conference_id: :id }
 
   has_and_belongs_to_many :questions
+  has_many :qanswers, through: :questions
 
   has_one :splashpage, dependent: :destroy
   has_one :contact, dependent: :destroy
