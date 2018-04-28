@@ -32,7 +32,7 @@
             %th
             %th
         %tbody
-          - @registrations.each_with_index do |registration, index|
+          - @registrations.each do |registration|
             - cache [:admin, registration, registration.user] do
               - user = registration.user
               - token = user.ticket_purchases.select{|p| p.ticket_id == @ticket.id }&.first&.physical_tickets&.first&.token
@@ -40,16 +40,17 @@
                 %td
                   = registration.id
                 %td
-                  = registration.name.present? ? registration.name : registration.username
+                  = link_to admin_user_path(user) do
+                    = user.name.present? ? user.name : user.username
                   %b
-                  - registration.user.roles.select{|r| r.resource == @conference}.each do |role|
+                  - user.roles.select{|r| r.resource == @conference}.each do |role|
                     %span.label.label-info
                       = role.name.titleize
-                %td
-                  = registration.email
+                %td.small
+                  = mail_to registration.email
                 - if @code_of_conduct
                   - if registration.accepted_code_of_conduct
-                    %td.text-success.text-center= fa_icon('check', title: 'accepted')
+                    %td.text-success.text-center= fa_icon('check-circle', title: 'accepted')
                   - else
                     %td.text-center.text-warning
                       = fa_icon('exclamation-circle',
