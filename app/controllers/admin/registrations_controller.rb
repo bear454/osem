@@ -22,6 +22,31 @@ module Admin
       @pdf_filename = "#{@conference.title}.pdf"
     end
 
+    def new
+      # Redirect to registration edit when user is already registered
+      if @conference.user_registered?(@user)
+        # Authorization needs to happen in every action before the return statement
+        # We authorize the #edit action, since we redirect to it
+        @registration = @user.registrations.find_by(conference_id: @conference.id)
+        authorize! :edit, @registration
+        redirect_to edit_admin_conference_registration_path(@conference, @registration)
+      end
+      @registration = @conference.registrations.new(user: @user)
+    end
+
+    def create
+      @user.update_attributes(user_params)
+      @conference.registrations.new(registration_params)
+
+      if @registration.save
+        redirect_to admin_conference_registrations_path(@conference),
+          notice: "#{@user.name} is now registered for #{@conference.title}."
+      else
+        redirect_back fallback_location: admin_conference_registrations_path(@conference),
+          error: "#{@user.name} was not registered to #{@conference.title}: #{@registration.errors.full_messages.to_sentence}"
+      end
+    end
+
     def edit; end
 
     def update
@@ -70,7 +95,7 @@ module Admin
     private
 
     def set_user
-      @user = User.find_by(id: @registration.user_id)
+      @user = User.find_by(id: params['user_id'] || @registration.user_id )
     end
 
     def user_params

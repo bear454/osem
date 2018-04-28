@@ -75,7 +75,7 @@ Osem::Application.routes.draw do
         end
       end
 
-      resources :registrations, except: [:create, :new] do
+      resources :registrations do
         member do
           patch :toggle_attendance
           patch :toggle_code_of_conduct

@@ -20,6 +20,8 @@ module Admin
     end
 
     def index
+      @conferences = @conferences.upcoming
+
       respond_to do |format|
         format.html
         format.json do
