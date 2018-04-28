@@ -57,7 +57,7 @@ class SchedulesController < ApplicationController
     if Rails.env.development?
       current_datetime = DateTime.parse("2018-04-28 10:00 PDST")
     else
-      current_datetime = DateTime.now
+      current_datetime = DateTime.now - 7.hours
     end
     event_schedules = @program.selected_event_schedules.sort_by! do |event_schedule|
       [ event_schedule.start_time, event_schedule.room.name ]
