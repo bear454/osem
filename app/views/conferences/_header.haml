@@ -26,11 +26,21 @@
                     = conference.venue.country_name
         - if @title_sponsor
           .col-md-2.hidden-xs.hidden-sm.title-sponsor
-            = render 'sponsor', sponsor: @title_sponsor
+            %a{ href: '#', data: { toggle: 'modal',
+              target: "#modal-sponsor-#{@title_sponsor.id}" } }
+              - if @title_sponsor.logo_file_name
+                = image_tag get_logo(@title_sponsor),
+                  class: ['img-responsive', 'img-sponsor'],
+                  title: @title_sponsor.name
       - if @title_sponsor
         .row.hidden-md.hidden-lg.title-sponsor
           .col-xs-6.col-xs-offset-3
-            = render 'sponsor', sponsor: @title_sponsor
+            %a{ href: '#', data: { toggle: 'modal',
+              target: "#modal-sponsor-#{@title_sponsor.id}" } }
+              - if @title_sponsor.logo_file_name
+                = image_tag get_logo(@title_sponsor),
+                  class: ['img-responsive', 'img-sponsor'],
+                  title: @title_sponsor.name
   - unless conference.description.blank?
     %section#about
       .container

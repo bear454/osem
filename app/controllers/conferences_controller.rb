@@ -30,6 +30,10 @@ class ConferencesController < ApplicationController
 
     @image_url = "#{request.protocol}#{request.host}#{@conference.picture}"
 
+    @title_sponsor = @conference.sponsors.eager_load(
+      :sponsorship_level
+    ).where('sponsorship_levels.title = ?', 'Title').first
+
     if splashpage.include_cfp
       cfps = @conference.program.cfps
       @call_for_events = cfps.find { |call| call.cfp_type == 'events' }
