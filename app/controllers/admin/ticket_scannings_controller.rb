@@ -24,7 +24,7 @@ module Admin
       @scans = @physical_ticket.ticket_scannings
       @conference = @physical_ticket.conference
       @registration = @attendee.registrations.for_conference(@conference)
-      @qanswers = @registration.qanswers.eager_load(:question, :answer)
+      @qanswers = @registration&.qanswers&.eager_load(:question, :answer)
       @purchases = @attendee.ticket_purchases.by_conference(@conference).eager_load(:ticket)
       @materials = @purchases.collect { |p| (p.ticket.materials || []) * p.quantity }.flatten.compact.sort
       @delivered = @scans.collect(&:materials).flatten.compact.sort
